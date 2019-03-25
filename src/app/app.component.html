@@ -1,0 +1,202 @@
+<link href="https://fonts.googleapis.com/css?family=Montserrat|Poppins:800" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+<div class="row">
+    <div class="col-6">
+      <h2>Notícias recentes</h2>
+      <p>Clique no título para ler a notícia</p>
+      <div>
+       <ul>
+        <li *ngFor="let noticia of noticias">
+          <p (click)="mostrar(noticia)">{{ noticia.titulo }}</p>
+          <p *ngIf="noticia.visivel">
+           {{ noticia.descricao }}
+           <br> 
+           Data de Publicação: {{ noticia.date }}
+           <br>
+           Publicada: {{ noticia.checkbox }}
+           <br>
+           Categoria: {{ noticia.categoria }}
+           <br>
+           Editoria: {{ noticia.editoria }}
+           <br>
+           Tags: {{ noticia.tags }}
+           <br>
+           <button class="btn btn-secondary" (click)="fechar(noticia)">Fechar</button>
+           <button class="btn btn-warning" (click)="openModal(templateEdit); editar(noticia)">Editar</button>
+           <button class="btn btn-danger" (click)="excluir(noticia)">Excluir</button>
+          </p>
+         </li>   
+       </ul>
+      </div>
+    </div>
+    <div class="col-6">
+        <button type="button" class="btn btn-primary" (click)="openModal(templateCadastro)">Cadastrar Nova</button>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+ 
+<ng-template #templateCadastro>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Cadastro</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <form #cadastro="ngForm" (submit)="cadastrar()">
+          <div>
+            <label for="titulo">Título</label>
+            <input type="text" id="titulo" name="titulo" [(ngModel)]="titulo" required>
+          </div>
+        
+          <div>
+            <label for="descricao">Descrição</label>
+            <textarea type="text" id="descricao" name="descricao" [(ngModel)]="descricao" required></textarea>
+          </div>
+        
+          <div>
+            <label for="date">Data de Publicação:</label>
+            <input type="date" id="date" name="date" [(ngModel)]="date" required>
+          </div>
+        
+          <div>
+            <label for="checkbox">Publicar: </label>
+            <input type="checkbox" id="checkbox" name="checkbox" [(ngModel)]="checkbox">
+          </div>
+        
+          <div>
+            <label>Categoria: </label> <br>
+            <select name="categoria" [(ngModel)]="selectCategoria">
+              <option value="" disabled>Selecione uma categoria</option>
+              <option *ngFor="let categoria of categorias" [ngValue]="categoria">
+                {{ categoria }}
+              </option>
+            </select>  
+          </div>
+          <div>
+            <label>Tags: </label> <br>
+              <select multiple name="tags" [(ngModel)]="selectTags">
+                <option value="" disabled>Use a tecla Ctrl para multseleção</option>
+                <option *ngFor="let tag of tags" [ngValue]="tag">
+                  {{ tag }}
+                </option>
+              </select>  
+            </div>
+        
+          <div>
+            <label>Editoria:</label> <br>
+            <label>
+              <input type="radio" id="radio" name="radio" value="Politica" [(ngModel)]="radio" required>
+              Política
+            </label>
+        
+            <label>
+              <input type="radio" id="radio" name="radio" value="Economia" [(ngModel)]="radio" required>
+              Economia
+            </label>
+        
+            <label>
+              <input type="radio" id="radio" name="radio" value="Esporte" [(ngModel)]="radio" required>
+              Esporte
+            </label>
+        
+            <label>
+              <input type="radio" id="radio" name="radio" value="Etretenimento" [(ngModel)]="radio" required>
+              Entretenimento
+            </label>
+          </div>
+          
+          
+          <button class="btn btn-success" type="submit" (click)="modalRef.hide()" [disabled]="!cadastro.form.valid">Cadastrar</button>
+          <button class="btn btn-info" type="reset" formnovalidate>Limpar</button>
+        </form>
+  </div>
+</ng-template>
+
+<ng-template #templateEdit>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Editar Noticia</h4>
+      <button type="submit" class="close pull-right" aria-label="Close" (click)="modalRef.hide(); cadastrar()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <form #cadastro="ngForm" (submit)="cadastrar()">
+            <div>
+              <label for="titulo">Título</label>
+              <input type="text" id="titulo" name="titulo" [(ngModel)]="titulo" required>
+            </div>
+          
+            <div>
+              <label for="descricao">Descrição</label>
+              <textarea type="text" id="descricao" name="descricao" [(ngModel)]="descricao" required></textarea>
+            </div>
+          
+            <div>
+              <label for="date">Data de Publicação</label>
+              <input type="date" id="date" name="date" [(ngModel)]="date" required>
+            </div>
+          
+            <div>
+              <label for="checkbox">Publicar: </label>
+              <input type="checkbox" id="checkbox" name="checkbox" [(ngModel)]="checkbox">
+            </div>
+          
+            <div>
+              <label>Categoria: </label> <br>
+              <select name="categoria" [(ngModel)]="selectCategoria">
+                <option value="" disabled>Selecione uma categoria</option>
+                <option *ngFor="let categoria of categorias" [ngValue]="categoria">
+                  {{ categoria }}
+                </option>
+              </select>  
+            </div>
+            <div>
+                <label>Tags: </label> <br>
+                  <select multiple name="tags" [(ngModel)]="selectTags">
+                    <option value="" disabled>Use a tecla Ctrl para multseleção</option>
+                    <option *ngFor="let tag of tags" [ngValue]="tag">
+                      {{ tag }}
+                    </option>
+                  </select>  
+                </div>
+          
+            <div>
+              <label>Editoria: </label> <br>
+              <label>
+                <input type="radio" id="radio" name="radio" value="Politica" [(ngModel)]="radio" required>
+                Política
+              </label>
+          
+              <label>
+                <input type="radio" id="radio" name="radio" value="Economia" [(ngModel)]="radio" required>
+                Economia
+              </label>
+          
+              <label>
+                <input type="radio" id="radio" name="radio" value="Esporte" [(ngModel)]="radio" required>
+                Esporte
+              </label>
+          
+              <label>
+                <input type="radio" id="radio" name="radio" value="Etretenimento" [(ngModel)]="radio" required>
+                Entretenimento
+              </label>
+            </div>
+            
+            
+            <button class="btn btn-success" type="submit" [disabled]="!cadastro.form.valid" (click)="modalRef.hide()" >Salvar</button>
+            <button class="btn btn-info" type="reset" formnovalidate>Limpar</button>
+          </form>
+    </div>
+  </ng-template>

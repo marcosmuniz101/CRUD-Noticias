@@ -1,0 +1,17 @@
+button{
+    margin: 10px;
+}
+
+h2{
+    font-family: 'Poppins', sans-serif;
+}
+
+.col-6{
+    margin-top: 15px;
+    padding-left: 25px;
+}
+
+label{
+    font-family: 'Poppins', sans-serif;
+    padding-right: 5px;
+}
